@@ -27,3 +27,17 @@
     border: none;
     outline: none;
 }
+
+.alert{
+    position: absolute;
+    min-width: 200px;
+    top: 1rem;
+    right: 1rem;
+    z-index: 3000;
+}
+
+::ng-deep {
+    .modal-dialog{
+     margin-top: 30vh;
+    }
+}

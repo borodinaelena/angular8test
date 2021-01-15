@@ -21,9 +21,6 @@ export abstract class CustomersService {
             .get(
                 `${this.url}/customers`
             )
-            .pipe(
-                catchError(this.handleError(`get customers list`))
-            );
     }
 
     update(data): Observable<any> {
@@ -36,17 +33,5 @@ export abstract class CustomersService {
                     'timestamp': new Date().toISOString()
                 },
             )
-            .pipe(
-                catchError(this.handleError('update'))
-            );
     }
-
-    protected handleError(operation = 'operation', result?) {
-        return (error: any): Observable<any> => {
-            console.error(error);
-            console.log(`${operation} failed: ${error.message}`);
-            return of(result);
-        };
-    }
-
 }

@@ -1,3 +1,4 @@
+import { error } from '@angular/compiler/src/util';
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
@@ -20,6 +21,7 @@ export class TableComponent {
   dataSource = [];
   closeResult = '';
   rowData = {};
+  errorMsg = '';
   public provinces = {
     "NL": "Newfoundland and Labrador",
     "PE": "Prince Edward Island",
@@ -39,27 +41,33 @@ export class TableComponent {
 
   constructor(
     private customersService: CustomersService,
-    private dialog: MatDialog,
     private modalService: NgbModal) {
 
     this.customersService.getList()
-      .subscribe(res => {
-        this.firstCustomer = res[0];
-        res.map(i => {
-          const name = i.name.split(' ');
-          this.dataSource.push({
-            name: name[0],
-            secondName: name[1],
-            fullName: i.name,
-            locationAbb: i.location,
-            location: this.provinces[i.location],
-            active: i.active
+      .subscribe(
+        res => {
+          this.firstCustomer = res[0];
+          res.map(i => {
+            const name = i.name.split(' ');
+            this.dataSource.push({
+              name: name[0],
+              secondName: name[1],
+              fullName: i.name,
+              locationAbb: i.location,
+              location: this.provinces[i.location],
+              active: i.active
+            })
           })
+        },
+        error => {
+          this.showError(error);
         })
-      })
 
   }
   update(content, row) {
+    if (!row.active) {
+      return;
+    }
     this.rowData = row;
     this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
@@ -67,10 +75,14 @@ export class TableComponent {
       this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
     });
 
-    // this.customersService.update(JSON.stringify(this.firstCustomer))
-    // .subscribe(res=>{
-    //   console.log(res)
-    // })
+    this.customersService.update(JSON.stringify(this.firstCustomer))
+      .subscribe(
+        res => {
+          console.log('res', res)
+        },
+        error => {
+          this.showError(error);
+        })
   }
 
   private getDismissReason(reason: any): string {
@@ -81,5 +93,12 @@ export class TableComponent {
     } else {
       return `with: ${reason}`;
     }
+  }
+
+  showError(err) {
+    this.errorMsg = err.message;
+    setTimeout(() => {
+      this.errorMsg = ''
+    }, 5000);
   }
 }

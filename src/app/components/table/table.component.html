@@ -52,3 +52,7 @@
     <div class="modal-footer">
     </div>
 </ng-template>
+
+<div class="alert alert-danger" role="alert" data-auto-dismiss *ngIf="errorMsg && errorMsg.length>0">
+    {{errorMsg}}
+  </div>
