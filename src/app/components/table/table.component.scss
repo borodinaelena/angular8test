@@ -1,0 +1,23 @@
+.list-container
+{
+    padding: 6rem;
+
+    td,th{
+       padding: 24px;
+    }
+    td{
+        cursor: pointer;
+    }
+    th{
+        cursor: default;
+    }
+
+   .disabled{
+        background-color: gray;
+        
+        td{
+            color: lightgrey;
+            cursor: default;
+        }
+    }
+}
