@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { CustomersService } from '../../services/customers.services';
 export interface Customer {
   name: string;
@@ -16,6 +18,8 @@ export interface Customer {
 export class TableComponent {
   displayedColumns: string[] = ['name', 'secondName', 'fullName', 'locationAbb', 'location'];
   dataSource = [];
+  closeResult = '';
+  rowData = {};
   public provinces = {
     "NL": "Newfoundland and Labrador",
     "PE": "Prince Edward Island",
@@ -31,12 +35,16 @@ export class TableComponent {
     "NT": "Northwest Territories",
     "NU": "Nunavut"
   }
+  firstCustomer = {};
 
   constructor(
-    private customersService: CustomersService) {
+    private customersService: CustomersService,
+    private dialog: MatDialog,
+    private modalService: NgbModal) {
 
     this.customersService.getList()
       .subscribe(res => {
+        this.firstCustomer = res[0];
         res.map(i => {
           const name = i.name.split(' ');
           this.dataSource.push({
@@ -50,5 +58,28 @@ export class TableComponent {
         })
       })
 
+  }
+  update(content, row) {
+    this.rowData = row;
+    this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
+
+    // this.customersService.update(JSON.stringify(this.firstCustomer))
+    // .subscribe(res=>{
+    //   console.log(res)
+    // })
+  }
+
+  private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return 'by clicking on a backdrop';
+    } else {
+      return `with: ${reason}`;
+    }
   }
 }

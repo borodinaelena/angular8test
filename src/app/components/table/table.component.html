@@ -28,6 +28,27 @@
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;" [attr.disabled]="!row.active"
-            [ngClass]="{'disabled': !row.active}"></tr>
+            [ngClass]="{'disabled': !row.active}" (click)="update(content, row)"></tr>
     </table>
 </div>
+
+<ng-template #content let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Info</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form>
+            <div class="form-group">
+                {{rowData.fullName}}
+                <br />
+                {{rowData.location}}
+                <br />
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+    </div>
+</ng-template>

@@ -5,34 +5,48 @@ import { of } from 'rxjs/internal/observable/of';
 import { Injectable } from '@angular/core';
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 
 export abstract class CustomersService {
 
-  private url = "https://ballistictest.azurewebsites.net/api/";
-  constructor(
-    protected httpClient: HttpClient,
-  ) {
-  }
+    private url = "https://ballistictest.azurewebsites.net/api";
+    constructor(
+        protected httpClient: HttpClient,
+    ) {
+    }
 
-  getList(): Observable<any> {
-    return this.httpClient
-      .get(
-        `${this.url}/customers`
-      )
-      .pipe(
-        catchError(this.handleError(`get customers list`))
-      );
-  }
+    getList(): Observable<any> {
+        return this.httpClient
+            .get(
+                `${this.url}/customers`
+            )
+            .pipe(
+                catchError(this.handleError(`get customers list`))
+            );
+    }
 
+    update(data): Observable<any> {
+        return this.httpClient
+            .post(
+                `${this.url}/customer`,
+                {
+                    'x-client-id': '12345',
+                    'firstcustomer': data,
+                    'timestamp': new Date().toISOString()
+                },
+            )
+            .pipe(
+                catchError(this.handleError('update'))
+            );
+    }
 
-  protected handleError(operation = 'operation', result?) {
-    return (error: any): Observable<any> => {
-      console.error(error);
-      console.log(`${operation} failed: ${error.message}`);
-      return of(result);
-    };
-  }
+    protected handleError(operation = 'operation', result?) {
+        return (error: any): Observable<any> => {
+            console.error(error);
+            console.log(`${operation} failed: ${error.message}`);
+            return of(result);
+        };
+    }
 
 }
