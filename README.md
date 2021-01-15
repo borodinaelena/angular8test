@@ -1,27 +1,19 @@
-# App
+# About App
+Clicking on an inactive row of the table calls a modal window with brief data about the customer.
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 10.0.0.
+Each time a modal window is opened, it sends a POST request that returns an error.
 
-## Development server
+Active lines are not clickable
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+## What was used:
+-To display the table - MatTableModule from @angular/material@8.2.3
 
-## Code scaffolding
+-For modal - NgbModule from @ng-bootstrap/ng-bootstrap@5.3.1
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+-For translations - TranslateModule from @ngx-translate/core @12.1.2
 
-## Build
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+# For start
+npm i
 
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+ng serve
