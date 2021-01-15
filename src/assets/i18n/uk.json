@@ -1,0 +1,7 @@
+{
+  "Name":"Ім'я",
+  "SecondName":"Фамілія",
+  "FullName":"ФІО",
+  "Abbreviation":"Абревіатура",
+  "Location": "Місто"
+}
